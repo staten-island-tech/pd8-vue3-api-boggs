@@ -1,6 +1,6 @@
 <template>
   <div>
-    <chart :data="cameraViolation.value" />
+    <chart :data.value="cameraViolation.value" />
   </div>
 </template>
 

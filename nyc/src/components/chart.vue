@@ -9,9 +9,9 @@
 import { computed, toRef } from 'vue'
 import ApexCharts from 'vue3-apexcharts'
 
-const props = {
+const props = defineProps({
   data: Array
-}
+})
 
 const barOptions = computed(() => {
   const data = toRef(props, 'data').value

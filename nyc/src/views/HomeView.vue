@@ -1,6 +1,6 @@
 <template>
   <div>
-    <chart :data.value="cameraViolation.value" />
+    <chart :data="cameraViolation" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import chart from '../components/chart.vue'
 import { ref, onMounted } from 'vue'
 
-const cameraViolation = ref('')
+const cameraViolation = ref([])
 
 async function getViolation() {
   try {

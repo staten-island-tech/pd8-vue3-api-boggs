@@ -1,7 +1,8 @@
 <template>
   <div>
     <ApexCharts type="bar" :options="barOptions" :series="barSeries" />
-    <ApexCharts type="pie" :options="pieOptions" :series="pieSeries" />
+    <!-- <ApexCharts type="pie" :options="pieOptions" :series="pieSeries" />
+    <ApexCharts type="line" :options="lineOptions" :series="lineSeries" /> -->
   </div>
 </template>
 
@@ -15,21 +16,60 @@ const props = defineProps({
 
 const barOptions = computed(() => {
   const data = toRef(props, 'data').value
-  console.log(data)
   if (!data) return {}
+
+  const violationsByType = data.reduce((accumulator, currentValue) => {
+    const violationType = currentValue.violation
+    if (!accumulator[violationType]) accumulator[violationType] = 0 // Initialize to 0 if it's a new violationType
+    accumulator[violationType] += 1 // Add 1 for each instance of the violationType
+    return accumulator
+  }, {})
+
+  const categories = Object.keys(violationsByType)
+  const seriesData = Object.values(violationsByType)
+
   return {
     chart: {
       type: 'bar',
-      height: 350
+      height: 600,
+      width: 2000,
+      plotOptions: {
+        bar: {
+          margin: 10,
+          padding: 10
+        }
+      }
     },
+
     series: [
       {
         name: 'Number of Violations',
-        data: data.map((violation) => violation.summons_number)
+        data: seriesData
       }
     ],
     xaxis: {
-      categories: data.map((violation) => violation.plate)
+      categories: categories,
+      labels: {
+        rotate: -45
+      }
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value) {
+          return value.toFixed() // Remove 'M' from y-axis labels
+        }
+      }
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return val.toFixed() // Remove 'M' from data labels
+      },
+      offsetY: -20,
+      style: {
+        fontSize: '12px',
+        colors: ['#ffffff']
+      }
     }
   }
 })
@@ -37,30 +77,77 @@ const barOptions = computed(() => {
 const barSeries = computed(() => {
   const data = toRef(props, 'data').value
   if (!data) return []
+
+  const violationsByType = data.reduce((accumulator, currentValue) => {
+    const violationType = currentValue.violation
+    if (!accumulator[violationType]) accumulator[violationType] = 0 // Initialize to 0 if it's a new violationType
+    accumulator[violationType] += 1 // Add 1 for each instance of the violationType
+    return accumulator
+  }, {})
+
+  const seriesData = Object.values(violationsByType)
+
   return [
     {
       name: 'Number of Violations',
-      data: data.map((violation) => violation.summons_number)
+      data: seriesData
     }
   ]
 })
 
-const pieOptions = computed(() => {
-  const data = toRef(props, 'data').value
-  if (!data) return {}
-  return {
-    chart: {
-      type: 'pie',
-      height: 350
-    },
-    series: data.map((violation) => violation.fine_amount),
-    labels: data.map((violation) => violation.violation)
-  }
-})
+// const pieOptions = computed(() => {
+//   const data = toRef(props, 'data').value
+//   if (!data) return {}
+//   return {
+//     chart: {
+//       type: 'pie',
+//       height: 350
+//     },
+//     series: data.map((violation) => violation.fine_amount),
+//     labels: data.map((violation) => violation.violation),
+//     dataLabels: {
+//       enabled: data.length < 20
+//     }
+//   }
+// })
 
-const pieSeries = computed(() => {
-  const data = toRef(props, 'data').value
-  if (!data) return []
-  return data.map((violation) => violation.fine_amount)
-})
+// const pieSeries = computed(() => {
+//   const data = toRef(props, 'data').value
+//   if (!data) return []
+//   return data.map((violation) => violation.fine_amount)
+// })
+
+// const lineOptions = computed(() => {
+//   const data = toRef(props, 'data').value
+//   if (!data) return {}
+//   return {
+//     chart: {
+//       type: 'line',
+//       height: 350
+//     },
+//     series: [
+//       {
+//         name: 'Number of Violations',
+//         data: data.map((violation) => violation.summons_number)
+//       }
+//     ],
+//     xaxis: {
+//       categories: data.map((violation) => violation.plate)
+//     },
+//     dataLabels: {
+//       enabled: data.length < 20
+//     }
+//   }
+// })
+
+// const lineSeries = computed(() => {
+//   const data = toRef(props, 'data').value
+//   if (!data) return []
+//   return [
+//     {
+//       name: 'Number of Violations',
+//       data: data.map((violation) => violation.summons_number)
+//     }
+//   ]
+// })
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <ApexCharts type="bar" :options="barOptions" :series="barSeries" />
-    <!-- <ApexCharts type="pie" :options="pieOptions" :series="pieSeries" />
-    <ApexCharts type="line" :options="lineOptions" :series="lineSeries" /> -->
+    <ApexCharts type="pie" :options="pieOptions" :series="pieSeries" />
+    <!-- <ApexCharts type="line" :options="lineOptions" :series="lineSeries" /> -->
   </div>
 </template>
 
@@ -95,27 +95,27 @@ const barSeries = computed(() => {
   ]
 })
 
-// const pieOptions = computed(() => {
-//   const data = toRef(props, 'data').value
-//   if (!data) return {}
-//   return {
-//     chart: {
-//       type: 'pie',
-//       height: 350
-//     },
-//     series: data.map((violation) => violation.fine_amount),
-//     labels: data.map((violation) => violation.violation),
-//     dataLabels: {
-//       enabled: data.length < 20
-//     }
-//   }
-// })
+const pieOptions = computed(() => {
+  const data = toRef(props, 'data').value
+  if (!data) return {}
+  return {
+    chart: {
+      type: 'pie',
+      height: 350
+    },
+    series: data.map((violation) => violation.payment_amount),
+    labels: data.map((violation) => violation.violation),
+    dataLabels: {
+      enabled: data.length < 20
+    }
+  }
+})
 
-// const pieSeries = computed(() => {
-//   const data = toRef(props, 'data').value
-//   if (!data) return []
-//   return data.map((violation) => violation.fine_amount)
-// })
+const pieSeries = computed(() => {
+  const data = toRef(props, 'data').value
+  if (!data) return []
+  return data.map((violation) => violation.payment_amount)
+})
 
 // const lineOptions = computed(() => {
 //   const data = toRef(props, 'data').value

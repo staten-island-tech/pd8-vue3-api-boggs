@@ -1,10 +1,12 @@
 <template>
   <div>
-    <chart :data="cameraViolation" />
+    <BarChart :data="cameraViolation" />
+    <!-- <chart :data="cameraViolation" /> -->
   </div>
 </template>
 
 <script setup>
+import BarChart from '../components/BarChart.vue'
 import chart from '../components/chart.vue'
 import { ref, onMounted } from 'vue'
 

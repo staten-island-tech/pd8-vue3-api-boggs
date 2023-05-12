@@ -29,7 +29,7 @@ const pieOptions = computed(() => {
 
   const totalPayment = Object.values(violationsByType).reduce((total, amount) => total + amount, 0)
 
-  const seriesData = Object.values(violationsByType)
+  const seriesData = Object.values(violationsByType).map((amount) => parseFloat(amount.toFixed(2)))
   const labels = Object.keys(violationsByType).map((type) => {
     const amount = violationsByType[type]
     const percentage = (amount / totalPayment) * 100

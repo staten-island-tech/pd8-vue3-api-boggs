@@ -30,28 +30,32 @@ const barOptions = computed(() => {
   const seriesData = Object.values(violationsByType)
 
   return {
-    chart: {
-      type: 'bar',
-      height: 600,
-      width: 2000,
-      plotOptions: {
-        bar: {
-          margin: 10,
-          padding: 10
-        }
-      }
-    },
     series: [
       {
         name: 'Number of Violations',
         data: seriesData
       }
     ],
-    xaxis: {
-      categories: categories,
-      labels: {
-        rotate: -45
+    chart: {
+      type: 'bar',
+      height: 800,
+      width: 1000
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        margin: 10,
+        padding: 10
       }
+    },
+    theme: {
+      mode: 'dark'
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      categories: categories
     }
   }
 })

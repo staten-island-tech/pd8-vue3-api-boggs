@@ -1,13 +1,13 @@
 <template>
   <div>
     <BarChart :data="cameraViolation" />
-    <!-- <chart :data="cameraViolation" /> -->
+    <PieChart :data="cameraViolation" />
   </div>
 </template>
 
 <script setup>
 import BarChart from '../components/BarChart.vue'
-import chart from '../components/chart.vue'
+import PieChart from '../components/PieChart.vue'
 import { ref, onMounted } from 'vue'
 
 const cameraViolation = ref([])

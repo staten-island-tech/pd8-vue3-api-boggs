@@ -17,7 +17,9 @@ const barOptions = computed(() => {
 
   if (!data) return {}
 
-  const violationsByType = data.reduce((accumulator, currentValue) => {
+  const filteredData = data.filter((violation) => violation.violation !== undefined)
+
+  const violationsByType = filteredData.reduce((accumulator, currentValue) => {
     const violationType = currentValue.violation
     if (!accumulator[violationType]) accumulator[violationType] = 0 // Initialize to 0 if it's a new violationType
     accumulator[violationType] += 1 // Add 1 for each instance of the violationType
@@ -39,7 +41,6 @@ const barOptions = computed(() => {
         }
       }
     },
-
     series: [
       {
         name: 'Number of Violations',
@@ -69,6 +70,15 @@ const barOptions = computed(() => {
         fontSize: '12px',
         colors: ['#ffffff']
       }
+    },
+    tooltip: {
+      enabled: true,
+      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+        const value = series[seriesIndex][dataPointIndex]
+        const category = w.globals.labels[dataPointIndex]
+
+        return `<div class="custom-tooltip">${category}: ${value}</div>`
+      }
     }
   }
 })
@@ -77,7 +87,9 @@ const barSeries = computed(() => {
   const data = toRef(props, 'data').value
   if (!data) return []
 
-  const violationsByType = data.reduce((accumulator, currentValue) => {
+  const filteredData = data.filter((violation) => violation.violation !== undefined)
+
+  const violationsByType = filteredData.reduce((accumulator, currentValue) => {
     const violationType = currentValue.violation
     if (!accumulator[violationType]) accumulator[violationType] = 0 // Initialize to 0 if it's a new violationType
     accumulator[violationType] += 1 // Add 1 for each instance of the violationType
@@ -94,3 +106,15 @@ const barSeries = computed(() => {
   ]
 })
 </script>
+
+<style scoped>
+apexcharts-tooltip {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  background-color: #000000 !important; /* Change to black and add !important */
+  color: #ffffff;
+  padding: 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+</style>
